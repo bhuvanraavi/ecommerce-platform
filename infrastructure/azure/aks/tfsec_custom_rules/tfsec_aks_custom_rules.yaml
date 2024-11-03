@@ -1,0 +1,89 @@
+rules:
+  # Enforce RBAC on AKS clusters
+  - code: AZU_CUSTOM_AKS_001
+    description: "AKS clusters should have RBAC enabled"
+    severity: HIGH
+    resource_type: "azurerm_kubernetes_cluster"
+    check: "attribute_equals"
+    attribute: "role_based_access_control.enabled"
+    value: true
+
+  # Ensure AKS API server is private
+  - code: AZU_CUSTOM_AKS_002
+    description: "AKS API server should be private to restrict public access"
+    severity: HIGH
+    resource_type: "azurerm_kubernetes_cluster"
+    check: "attribute_equals"
+    attribute: "api_server_authorized_ip_ranges"
+    value: "not_empty"
+
+  # Enable network policy in AKS clusters
+  - code: AZU_CUSTOM_AKS_003
+    description: "AKS clusters should have network policy enabled to control inter-pod communication"
+    severity: HIGH
+    resource_type: "azurerm_kubernetes_cluster"
+    check: "attribute_equals"
+    attribute: "network_profile.network_policy"
+    value: "calico"  # Or "azure" if using Azure's native network policies
+
+  # Restrict AKS node pools to private IPs
+  - code: AZU_CUSTOM_AKS_004
+    description: "AKS node pools should be restricted to private IP addresses"
+    severity: HIGH
+    resource_type: "azurerm_kubernetes_cluster_node_pool"
+    check: "attribute_equals"
+    attribute: "vnet_subnet_id"
+    value: "not_empty"
+
+  # Enforce managed identities for AKS clusters
+  - code: AZU_CUSTOM_AKS_005
+    description: "AKS clusters should use managed identities for enhanced security"
+    severity: MEDIUM
+    resource_type: "azurerm_kubernetes_cluster"
+    check: "attribute_exists"
+    attribute: "identity"
+
+  # Enable monitoring for AKS clusters
+  - code: AZU_CUSTOM_AKS_006
+    description: "AKS clusters should have monitoring enabled for operational insights"
+    severity: MEDIUM
+    resource_type: "azurerm_kubernetes_cluster"
+    check: "attribute_equals"
+    attribute: "addon_profile.oms_agent.enabled"
+    value: true
+
+  # Ensure AKS uses the latest Kubernetes version
+  - code: AZU_CUSTOM_AKS_007
+    description: "AKS clusters should use the latest Kubernetes version"
+    severity: HIGH
+    resource_type: "azurerm_kubernetes_cluster"
+    check: "attribute_version_at_least"
+    attribute: "kubernetes_version"
+    value: "1.24.0"  # Replace with the latest minimum version as needed
+
+  # Restrict access to the Kubelet API
+  - code: AZU_CUSTOM_AKS_008
+    description: "Kubelet API access should be restricted on AKS clusters"
+    severity: HIGH
+    resource_type: "azurerm_kubernetes_cluster"
+    check: "attribute_equals"
+    attribute: "network_profile.kubelet_identity"
+    value: "not_empty"
+
+  # Require Pod Security Policies (PSP) in AKS
+  - code: AZU_CUSTOM_AKS_009
+    description: "AKS clusters should enforce pod security policies or equivalent"
+    severity: HIGH
+    resource_type: "azurerm_kubernetes_cluster"
+    check: "attribute_equals"
+    attribute: "enable_pod_security_policy"
+    value: true
+
+  # Limit container registry access for AKS clusters
+  - code: AZU_CUSTOM_AKS_010
+    description: "AKS clusters should access container registries through private endpoints"
+    severity: HIGH
+    resource_type: "azurerm_container_registry"
+    check: "attribute_equals"
+    attribute: "network_rule_set.default_action"
+    value: "Deny"

@@ -1,0 +1,62 @@
+# apiVersion: terrascan.io/v1
+# kind: Policy
+# metadata:
+#   name: azure-custom-policies
+# spec:
+#   rules:
+#     - id: storage-https
+#       description: "Ensure that Azure Storage Accounts use HTTPS"
+#       severity: HIGH
+#       resource:
+#         type: azurerm_storage_account
+#       condition:
+#         - not:
+#             field: values.enable_https_traffic_only
+#             operator: equal
+#             value: true
+
+#     - id: vm-sku
+#       description: "Ensure that Azure Virtual Machines have a specific SKU"
+#       severity: MEDIUM
+#       resource:
+#         type: azurerm_virtual_machine
+#       condition:
+#         - not:
+#             field: values.sku
+#             operator: in
+#             value: 
+#               - "Standard_DS1_v2"
+#               - "Standard_DS2_v2"
+
+#     - id: nsg-inbound-rules
+#       description: "Ensure Network Security Groups have at least one inbound rule"
+#       severity: LOW
+#       resource:
+#         type: azurerm_network_security_group
+#       condition:
+#         - operator: count
+#           field: values.security_rule
+#           operator: equal
+#           value: 0
+
+#     - id: key-vault-soft-delete
+#       description: "Ensure Azure Key Vaults have soft delete enabled"
+#       severity: HIGH
+#       resource:
+#         type: azurerm_key_vault
+#       condition:
+#         - not:
+#             field: values.enable_soft_delete
+#             operator: equal
+#             value: true
+
+#     - id: sql-threat-detection
+#       description: "Ensure Azure SQL Databases have threat detection enabled"
+#       severity: HIGH
+#       resource:
+#         type: azurerm_sql_database
+#       condition:
+#         - not:
+#             field: values.threat_detection_policy.state
+#             operator: equal
+#             value: "Enabled"

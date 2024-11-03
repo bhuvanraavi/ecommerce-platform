@@ -1,0 +1,105 @@
+  
+  rules:
+  - code: AZU_CUSTOM_001
+    description: "All Azure resources must have tags for tracking and management"
+    severity: HIGH
+    resource_type: "azurerm_resource_group"
+    check: "has_tags"
+  - code: AZU_CUSTOM_002
+    description: "All Azure resources must have tags for tracking and management"
+    severity: HIGH
+    resource_type: "azurerm_storage_account"
+    check: "has_tags"
+  - code: AZU_CUSTOM_003
+    description: "All Azure resources must have tags for tracking and management"
+    severity: HIGH
+    resource_type: "azurerm_virtual_network"
+    check: "has_tags"
+  - code: AZU_CUSTOM_004
+    description: "All Azure resources must have tags for tracking and management"
+    severity: HIGH
+    resource_type: "azurerm_sql_server"
+    check: "has_tags"
+  - code: AZU_CUSTOM_005
+    description: "Public IP addresses should not be created unless necessary"
+    severity: HIGH
+    resource_type: "azurerm_public_ip"
+    check: "does_not_exist"
+  - code: AZU_CUSTOM_006
+    description: "App Services should have HTTPS only enabled to secure data in transit"
+    severity: MEDIUM
+    resource_type: "azurerm_app_service"
+    check: "attribute_equals"
+    attribute: "https_only"
+    value: true
+  - code: AZU_CUSTOM_007
+    description: "Storage Accounts should have encryption enabled"
+    severity: HIGH
+    resource_type: "azurerm_storage_account"
+    check: "attribute_equals"
+    attribute: "enable_blob_encryption"
+    value: true
+  - code: AZU_CUSTOM_008
+    description: "Storage Accounts should have encryption enabled"
+    severity: HIGH
+    resource_type: "azurerm_storage_account"
+    check: "attribute_equals"
+    attribute: "enable_file_encryption"
+    value: true
+  - code: AZU_CUSTOM_009
+    description: "NSG rules should not allow unrestricted SSH access from the internet"
+    severity: HIGH
+    resource_type: "azurerm_network_security_rule"
+    check: "attribute_not_equals"
+    attribute: "source_address_prefix"
+    value: "0.0.0.0/0"
+    extra_conditions:
+      - attribute: "destination_port_ranges"
+        condition: "contains"
+        value: "22"
+  - code: AZU_CUSTOM_010
+    description: "NSG rules should not allow unrestricted RDP access from the internet"
+    severity: HIGH
+    resource_type: "azurerm_network_security_rule"
+    check: "attribute_not_equals"
+    attribute: "source_address_prefix"
+    value: "0.0.0.0/0"
+    extra_conditions:
+      - attribute: "destination_port_ranges"
+        condition: "contains"
+        value: "3389"
+  - code: AZU_CUSTOM_011
+    description: "Azure SQL Database should not be accessible from the public internet"
+    severity: HIGH
+    resource_type: "azurerm_sql_server"
+    check: "attribute_not_equals"
+    attribute: "public_network_access_enabled"
+    value: false
+  - code: AZU_CUSTOM_012
+    description: "Azure SQL Database should enforce TLS version 1.2 or higher"
+    severity: HIGH
+    resource_type: "azurerm_sql_server"
+    check: "attribute_greater_than_or_equal_to"
+    attribute: "minimum_tls_version"
+    value: "1.2"
+  - code: AZU_CUSTOM_013
+    description: "Azure Key Vault should have soft delete enabled"
+    severity: HIGH
+    resource_type: "azurerm_key_vault"
+    check: "attribute_equals"
+    attribute: "enable_soft_delete"
+    value: true
+  - code: AZU_CUSTOM_014
+    description: "Virtual Machines should have diagnostic logging enabled"
+    severity: MEDIUM
+    resource_type: "azurerm_virtual_machine"
+    check: "attribute_equals"
+    attribute: "boot_diagnostics"
+    value: true
+  - code: AZU_CUSTOM_015
+    description: "Storage Accounts should have diagnostic logging enabled"
+    severity: MEDIUM
+    resource_type: "azurerm_storage_account"
+    check: "attribute_equals"
+    attribute: "enable_blob_encryption"
+    value: true
