@@ -1,9 +1,9 @@
 resource "azuread_application" "default" {
-  display_name = "${var.name}-${var.environment}"  
+  display_name = "${var.name}-${var.environment}"
 }
 
 resource "azuread_service_principal" "default" {
-  client_id = azuread_application.default.client_id  
+  client_id = azuread_application.default.client_id
 }
 
 resource "random_string" "password" {

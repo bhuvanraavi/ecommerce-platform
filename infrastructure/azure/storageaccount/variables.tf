@@ -35,5 +35,7 @@ variable "common_tags" {
     Application = "Azure Compliance"
     Creator     = "Azure Compliance"
     Role        = "Azure Compliance"
+    Department  = "Engineering"
+    Owner       = "Bhuvan"
   }
 }

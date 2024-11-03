@@ -7,9 +7,9 @@ resource "azurerm_kubernetes_cluster" "default" {
   role_based_access_control_enabled = true
 
   default_node_pool {
-    name       = "default"
-    node_count = var.node_count
-    vm_size = var.node_type
+    name            = "default"
+    node_count      = var.node_count
+    vm_size         = var.node_type
     os_disk_size_gb = 30
     vnet_subnet_id  = azurerm_subnet.aks.id
   }
