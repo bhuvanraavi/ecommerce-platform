@@ -49,3 +49,9 @@ steps:
     provider: 'azurerm'
     command: 'validate'
     workingDirectory: '$(System.DefaultWorkingDirectory)/infrastructure/azure/aks'
+- task: TerraformTaskV4@4
+  inputs:
+    provider: 'azurerm'
+    command: 'plan'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/infrastructure/azure/aks'
+    environmentServiceNameAzureRM: 'TfConnection'
