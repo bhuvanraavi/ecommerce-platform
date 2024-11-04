@@ -38,6 +38,7 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'init'
+    workingDirectory: '$(Build.ArtifactStagingDirectory)/akscluster'
     backendServiceArm: 'TfConnection'
     backendAzureRmResourceGroupName: 'tfstate'
     backendAzureRmStorageAccountName: 'tfstateravi2408'
