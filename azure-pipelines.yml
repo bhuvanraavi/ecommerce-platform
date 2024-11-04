@@ -31,3 +31,15 @@ steps:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)/akscluster'
     ArtifactName: 'drop'
     publishLocation: 'Container'
+- task: TerraformInstaller@1
+  inputs:
+    terraformVersion: 'latest'
+- task: TerraformTaskV4@4
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    backendServiceArm: 'TfConnection'
+    backendAzureRmResourceGroupName: 'tfstate'
+    backendAzureRmStorageAccountName: 'tfstateravi2408'
+    backendAzureRmContainerName: 'tfstate'
+    backendAzureRmKey: 'terraform.tfstate'
