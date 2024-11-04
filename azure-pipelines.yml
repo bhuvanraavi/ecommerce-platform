@@ -10,8 +10,6 @@ pool: Default
   
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
 
 - script: |
     echo Add other tasks to build, test, and deploy your project.
@@ -26,12 +24,7 @@ steps:
       aks/**
       !.git/**/*
     TargetFolder: '$(Build.ArtifactStagingDirectory)/akscluster'
-- task: PublishBuildArtifacts@1
-  displayName: 'Publishing the Artifacts'
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/akscluster'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+
 - task: TerraformInstaller@1
   displayName: 'Terraform Installation'
   inputs:
@@ -68,3 +61,9 @@ steps:
     outputTo: 'console'
     outputFormat: 'default'
     environmentServiceNameAzureRM: 'TfConnection'
+- task: PublishBuildArtifacts@1
+  displayName: 'Publishing the Artifacts'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/akscluster'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
