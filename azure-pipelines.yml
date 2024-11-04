@@ -27,14 +27,17 @@ steps:
       !.git/**/*
     TargetFolder: '$(Build.ArtifactStagingDirectory)/akscluster'
 - task: PublishBuildArtifacts@1
+  displayName: 'Publishing the Artifacts'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)/akscluster'
     ArtifactName: 'drop'
     publishLocation: 'Container'
 - task: TerraformInstaller@1
+  displayName: 'Terraform Installation'
   inputs:
     terraformVersion: 'latest'
 - task: TerraformTaskV4@4
+  displayName: 'Terraform Initialization'
   inputs:
     provider: 'azurerm'
     command: 'init'
@@ -45,13 +48,23 @@ steps:
     backendAzureRmContainerName: 'tfstate'
     backendAzureRmKey: 'terraform.tfstate'
 - task: TerraformTaskV4@4
+  displayName: 'Terraform Validate'
   inputs:
     provider: 'azurerm'
     command: 'validate'
     workingDirectory: '$(System.DefaultWorkingDirectory)/infrastructure/azure/aks'
 - task: TerraformTaskV4@4
+  displayName: 'Terraform Plan'
   inputs:
     provider: 'azurerm'
     command: 'plan'
     workingDirectory: '$(System.DefaultWorkingDirectory)/infrastructure/azure/aks'
+    environmentServiceNameAzureRM: 'TfConnection'
+- task: TerraformTaskV4@4
+  displayName: 'Terraform Show'
+  inputs:
+    provider: 'azurerm'
+    command: 'show'
+    outputTo: 'console'
+    outputFormat: 'default'
     environmentServiceNameAzureRM: 'TfConnection'
