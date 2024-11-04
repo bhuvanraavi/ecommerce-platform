@@ -44,3 +44,8 @@ steps:
     backendAzureRmStorageAccountName: 'tfstateravi2408'
     backendAzureRmContainerName: 'tfstate'
     backendAzureRmKey: 'terraform.tfstate'
+- task: TerraformTaskV4@4
+  inputs:
+    provider: 'azurerm'
+    command: 'validate'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/infrastructure/azure/aks'
