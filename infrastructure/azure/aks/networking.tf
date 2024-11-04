@@ -46,6 +46,9 @@ resource "azurerm_network_security_group" "ingress" {
   name                = "${var.name}-ingress-nsg"
   location            = azurerm_resource_group.default.location
   resource_group_name = azurerm_resource_group.default.name
+  timeouts {
+    delete = "10m"
+  }
   tags                = var.common_tags
 }
 
@@ -189,6 +192,34 @@ resource "azurerm_network_security_rule" "app_gateway_inbound" {
   protocol                    = "Tcp"
   source_port_range           = "*"
   destination_port_ranges     = ["65200-65535"]
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.default.name
+  network_security_group_name = azurerm_network_security_group.gateway.name
+}
+
+resource "azurerm_network_security_rule" "allow_https" {
+  name                        = "allowhttps"
+  priority                    = 101
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range     = "443"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.default.name
+  network_security_group_name = azurerm_network_security_group.gateway.name
+}
+
+resource "azurerm_network_security_rule" "allow_http" {
+  name                        = "allowhttp"
+  priority                    = 102
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range     = "80"
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
   resource_group_name         = azurerm_resource_group.default.name

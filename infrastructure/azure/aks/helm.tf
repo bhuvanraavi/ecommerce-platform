@@ -27,28 +27,33 @@ controller:
       service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "${azurerm_subnet.ingress.name}"
 EOF
   ]
-  depends_on = [kubernetes_cluster_role_binding.tiller]
+  depends_on = [azurerm_kubernetes_cluster.default, kubernetes_cluster_role_binding.tiller]
 }
 
 resource "helm_release" "ghost" {
   name       = "ghost-blog"
   repository = "https://charts.bitnami.com/bitnami"
   chart      = "ghost"
+
   set {
     name  = "service.type"
     value = "LoadBalancer"
   }
+
   set {
     name  = "ghostUsername"
     value = "admin"
   }
+
   set {
     name  = "ghostPassword"
     value = "securepassword"
   }
+
   set {
     name  = "ghostEmail"
     value = "admin@example.com"
   }
-  depends_on = [kubernetes_cluster_role_binding.tiller]
+
+  depends_on = [azurerm_kubernetes_cluster.default, kubernetes_cluster_role_binding.tiller]
 }
