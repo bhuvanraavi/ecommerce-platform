@@ -21,9 +21,9 @@ steps:
 - task: CopyFiles@2
   displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
   inputs:
-    SourceFolder: '$(Build.SourcesDirectory)/infrastructure'
+    SourceFolder: '$(Build.SourcesDirectory)/infrastructure/azure'
     Contents: |
-      azure/aks/**
+      aks/**
       !.git/**/*
     TargetFolder: '$(Build.ArtifactStagingDirectory)/akscluster'
 - task: PublishBuildArtifacts@1
