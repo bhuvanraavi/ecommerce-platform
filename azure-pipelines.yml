@@ -19,10 +19,13 @@ steps:
   displayName: 'Run a multi-line script'
   
 - task: CopyFiles@2
+  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)'
-    Contents: '**/*'
-    TargetFolder: '$(build.artifactstagingdirectory)'
+    Contents: |
+      **/*
+      !.git/**/*
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
