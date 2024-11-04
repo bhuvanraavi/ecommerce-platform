@@ -19,9 +19,9 @@ steps:
   displayName: 'Run a multi-line script'
   
 - task: CopyFiles@2
-  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)/infrastructure'
+  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
   inputs:
-    SourceFolder: '$(Build.SourcesDirectory)'
+    SourceFolder: '$(Build.SourcesDirectory)/infrastructure'
     Contents: |
       azure/aks/**
       !.git/**/*
