@@ -19,15 +19,15 @@ steps:
   displayName: 'Run a multi-line script'
   
 - task: CopyFiles@2
-  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)/infrastructure'
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)'
     Contents: |
       azure/aks/**
       !.git/**/*
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/akscluster'
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/akscluster'
     ArtifactName: 'drop'
     publishLocation: 'Container'
