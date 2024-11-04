@@ -20,6 +20,6 @@ steps:
   
 - task: CopyFiles@2
   inputs:
-    SourceFolder: 'https://github.com/bhuvanraavi/ecommerce-platform.git'
-    Contents: '**'
+    SourceFolder: '$(Build.SourcesDirectory)'
+    Contents: '**/*'
     TargetFolder: '$(build.artifactstagingdirectory)'
