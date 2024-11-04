@@ -26,3 +26,8 @@ steps:
       azure/aks/**
       !.git/**/*
     TargetFolder: '$(Build.ArtifactStagingDirectory)/akscluster'
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/akscluster'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
