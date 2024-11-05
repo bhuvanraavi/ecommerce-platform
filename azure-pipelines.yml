@@ -86,15 +86,25 @@ steps:
   displayName: 'Checkov scan and results'
   workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/azure/aks
 
-- powershell: |
-    Write-Host "Downloading Terrascan..."
-    $url = "https://github.com/tenable/terrascan/releases/download/v1.19.9/terrascan_1.19.9_Darwin_arm64.tar.gz"
-    Invoke-WebRequest -Uri $url -OutFile terrascan.zip
-    # Use System.IO.Compression to extract the ZIP file
-    Add-Type -AssemblyName System.IO.Compression.FileSystem
-    [System.IO.Compression.ZipFile]::ExtractToDirectory("terrascan.zip", ".\terrascan")
-    $env:Path += ";$(System.DefaultWorkingDirectory)\terrascan"
-  displayName: 'Download and install Terrascan'
+- script: |
+    # Ensure Chocolatey is installed
+    if (-not (Get-Command choco -ErrorAction SilentlyContinue)) {
+        Write-Host "Installing Chocolatey..."
+        Set-ExecutionPolicy Bypass -Scope Process -Force; 
+        [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12; 
+        iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+    } else {
+        Write-Host "Chocolatey is already installed."
+    }
+
+    # Install Terrascan
+    Write-Host "Installing Terrascan..."
+    choco install terrascan -y
+
+    # Verify the installation
+    Write-Host "Verifying Terrascan installation..."
+    terrascan version
+  displayName: 'Install Terrascan using Chocolatey'
 
 - task: PublishTestResults@2
   inputs:
