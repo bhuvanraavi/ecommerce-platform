@@ -54,9 +54,14 @@ steps:
     workingDirectory: '$(System.DefaultWorkingDirectory)/infrastructure/azure/aks'
     commandOptions: '-out=tfplan.binary'
     environmentServiceNameAzureRM: 'TfConnection'
+
 - script: terraform show -json tfplan.binary > main.tfplan.json
   displayName: 'terraform show'
   workingDirectory: '$(System.DefaultWorkingDirectory)/infrastructure/azure/aks'
+
+- script: type C:\agent\_work\1\s\infrastructure\azure\aks\main.tfplan.json
+  displayName: 'Debug: Print JSON Plan File'
+
 - task: tfsec@1
   inputs:
     version: 'v1.26.0'
