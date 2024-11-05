@@ -90,10 +90,9 @@ steps:
     Write-Host "Downloading Terrascan..."
     $url = "https://github.com/tenable/terrascan/releases/download/v1.19.9/terrascan_1.19.9_Darwin_arm64.tar.gz"
     Invoke-WebRequest -Uri $url -OutFile terrascan.zip
-    # Extract the binary
-    Expand-Archive -Path "terrascan.zip" -DestinationPath ".\terrascan"
-
-    # Update the PATH for the current session to include Terrascan
+    # Use System.IO.Compression to extract the ZIP file
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    [System.IO.Compression.ZipFile]::ExtractToDirectory("terrascan.zip", ".\terrascan")
     $env:Path += ";$(System.DefaultWorkingDirectory)\terrascan"
   displayName: 'Download and install Terrascan'
 
