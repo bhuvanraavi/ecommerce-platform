@@ -98,7 +98,6 @@ steps:
     testResultsFormat: 'JUnit'
     testRunTitle: 'JUnit Test Results'
   displayName: 'Publish JUnit Test Results'
-  
 - task: PublishBuildArtifacts@1
   displayName: 'Publishing the Artifacts'
   inputs:
