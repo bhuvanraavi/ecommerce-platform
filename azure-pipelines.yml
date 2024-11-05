@@ -61,13 +61,26 @@ steps:
     outputTo: 'console'
     outputFormat: 'default'
     environmentServiceNameAzureRM: 'TfConnection'
+- task: tfsec@1
+  inputs:
+    version: 'v1.26.0'
+    dir: '$(System.DefaultWorkingDirectory)/infrastructure/azure/aks'
+
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.x'
+    addToPath: true
+    architecture: 'x64'
+- script: |
+    pip install --upgrade pip  # Upgrade pip to the latest version
+    python -m venv venv
+    venv\Scripts\activate
+    pip install terraform-compliance  # Install terraform-compliance, or specify other packages if needed
+  displayName: 'Install terraform-compliance with pip'
+  workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/azure/aks  # Optional: Set working directory if needed
 - task: PublishBuildArtifacts@1
   displayName: 'Publishing the Artifacts'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)/akscluster'
     ArtifactName: 'drop'
     publishLocation: 'Container'
-- task: tfsec@1
-  inputs:
-    version: 'v1.26.0'
-    dir: '$(System.DefaultWorkingDirectory)/infrastructure/azure/aks'

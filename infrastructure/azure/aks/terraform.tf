@@ -6,7 +6,11 @@ terraform {
     }
     azurerm = {
       source  = "hashicorp/azurerm"
+<<<<<<< HEAD
       version = "~>3.0"
+=======
+      version = "~> 3.0"
+>>>>>>> f04a2acf7a3c7d16f5bfb22b805f91ac408956ff
     }
     random = {
       source  = "hashicorp/random"
@@ -24,4 +28,8 @@ terraform {
     key                  = "terraform.tfstate"
   }
   required_version = ">= 1.3.0"
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> f04a2acf7a3c7d16f5bfb22b805f91ac408956ff
