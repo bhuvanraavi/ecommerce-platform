@@ -88,7 +88,7 @@ steps:
 
 - powershell: |
     Write-Host "Downloading Terrascan..."
-    $url = "https://github.com/accurics/terrascan/releases/latest/download/terrascan_windows_amd64.zip"
+    $url = "https://github.com/tenable/terrascan/releases/download/v1.19.9/terrascan_1.19.9_Darwin_arm64.tar.gz"
     Invoke-WebRequest -Uri $url -OutFile terrascan.zip
   displayName: 'Download Terrascan'
 
