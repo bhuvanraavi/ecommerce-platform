@@ -86,20 +86,11 @@ steps:
   displayName: 'Checkov scan and results'
   workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/azure/aks
 
-- script: |    
-    if (-not (Get-Command choco -ErrorAction SilentlyContinue)) {
-        Write-Host "Installing Chocolatey..."
-        Set-ExecutionPolicy Bypass -Scope Process -Force; 
-        [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12; 
-        iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-    } else {
-        Write-Host "Chocolatey is already installed."
-    }    
-    Write-Host "Installing Terrascan..."
-    choco install terrascan -y    
-    Write-Host "Verifying Terrascan installation..."
-    terrascan version
-  displayName: 'Install Terrascan using Chocolatey'
+steps:
+- script: |
+    @powershell -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
+  displayName: 'Install Chocolatey'
+  workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/azure/aks
 
 - task: PublishTestResults@2
   inputs:
@@ -107,6 +98,7 @@ steps:
     testResultsFormat: 'JUnit'
     testRunTitle: 'JUnit Test Results'
   displayName: 'Publish JUnit Test Results'
+  
 - task: PublishBuildArtifacts@1
   displayName: 'Publishing the Artifacts'
   inputs:
