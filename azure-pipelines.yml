@@ -82,7 +82,7 @@ steps:
   workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/azure/aks
 - task: PublishTestResults@2
   inputs:
-    testResultsFiles: '$(System.DefaultWorkingDirectory)/test-results/*.xml'
+    testResultsFiles: '$(System.DefaultWorkingDirectory)/infrastructure/azure/aks/*.xml'
     testResultsFormat: 'JUnit'
     testRunTitle: 'JUnit Test Results'
   displayName: 'Publish JUnit Test Results'
