@@ -86,8 +86,7 @@ steps:
   displayName: 'Checkov scan and results'
   workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/azure/aks
 
-- script: |
-    # Ensure Chocolatey is installed
+- script: |    
     if (-not (Get-Command choco -ErrorAction SilentlyContinue)) {
         Write-Host "Installing Chocolatey..."
         Set-ExecutionPolicy Bypass -Scope Process -Force; 
@@ -95,13 +94,9 @@ steps:
         iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
     } else {
         Write-Host "Chocolatey is already installed."
-    }
-
-    # Install Terrascan
+    }    
     Write-Host "Installing Terrascan..."
-    choco install terrascan -y
-
-    # Verify the installation
+    choco install terrascan -y    
     Write-Host "Verifying Terrascan installation..."
     terrascan version
   displayName: 'Install Terrascan using Chocolatey'
