@@ -86,6 +86,24 @@ steps:
   displayName: 'Checkov scan and results'
   workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/azure/aks
 
+- task: PowerShell@2
+  displayName: "Download and Install Terrascan"
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Specify the latest version you want to install
+      $version = "<latest_version>"
+      
+      # Download Terrascan
+      Invoke-WebRequest -Uri "https://github.com/tenable/terrascan/releases/download/v$version/terrascan_$version_windows_amd64.zip" -OutFile "terrascan.zip"
+      
+      # Extract the executable
+      Expand-Archive -Path "terrascan.zip" -DestinationPath ".\terrascan"
+      
+      # Add Terrascan directory to PATH for the current session
+      $env:Path += ";$(System.DefaultWorkingDirectory)\terrascan"
+
+
 - task: PublishTestResults@2
   inputs:
     testResultsFiles: '$(System.DefaultWorkingDirectory)/infrastructure/azure/aks/*.xml'
