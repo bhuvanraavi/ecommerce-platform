@@ -43,6 +43,7 @@ terraform.rc
 *.terraform.lock.hcl
 main.tfplan
 main.tfplan.json
+checkov_results.xml
 
 venv/
 documents/
