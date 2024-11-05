@@ -91,10 +91,33 @@ steps:
     choco install terrascan -y
   displayName: 'Install Chocolatey and Terrascan with Elevated Permissions'
 
+- script: |
+    terrascan scan -o json > terrascan-results.json
+  displayName: 'Run Terrascan and Save Results in JSON'
+  workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/azure/aks
 
-- script: |    
-    terrascan scan -d . -o xml >  terrascanresults.xml
-  displayName: 'Install and run terrascan'
+- powershell: |
+    $jsonResults = Get-Content -Path "terrascan-results.json" -Raw | ConvertFrom-Json
+    $xml = New-Object System.Xml.XmlDocument
+    $testsuites = $xml.CreateElement("testsuites")
+    $xml.AppendChild($testsuites) | Out-Null
+    $testsuite = $xml.CreateElement("testsuite")
+    $testsuites.AppendChild($testsuite) | Out-Null
+    $testsuite.SetAttribute("name", "Terrascan")
+    $testsuite.SetAttribute("tests", $jsonResults.violations.Count.ToString())
+    
+    foreach ($violation in $jsonResults.violations) {
+        $testcase = $xml.CreateElement("testcase")
+        $testcase.SetAttribute("name", $violation.description)
+        $failure = $xml.CreateElement("failure")
+        $failure.SetAttribute("message", $violation.rule_name)
+        $failure.InnerText = $violation.message
+        $testcase.AppendChild($failure) | Out-Null
+        $testsuite.AppendChild($testcase) | Out-Null
+    }
+
+    $xml.Save("terrascan-results.xml")
+  displayName: 'Convert JSON Results to JUnit XML'
   workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/azure/aks
 
 - task: PublishTestResults@2
