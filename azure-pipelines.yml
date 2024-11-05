@@ -73,10 +73,7 @@ steps:
     addToPath: true
     architecture: 'x64'
 - script: |
-    python -m venv venv
-    venv\Scripts\activate
     pip install --upgrade pip
-    echo venv activated
     pip install pytest terraform-compliance
     terraform-compliance -p $(tfPlanFile) -f features/compliance --output junit --junit-xml $(tfComplianceResults)
     echo scancomplete
