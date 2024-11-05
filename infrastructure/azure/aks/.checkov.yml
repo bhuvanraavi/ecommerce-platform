@@ -1,0 +1,17 @@
+skip-check:
+  - CKV_AZURE_14   # Skip the check for HTTPS traffic only
+  - CKV_AZURE_6    # Ensure AKS has an API Server Authorized IP Ranges enabled
+  - CKV_AZURE_218  # Ensure Application Gateway defines secure protocols for in transit communication
+  - CKV_AZURE_217  # Ensure Azure Application Gateway listener allows connection requests over HTTP
+  - CKV_AZURE_115  # Ensure that AKS enables private clusters
+  - CKV_K8S_42     # Ensure that default service accounts are not actively used
+  - CKV_AZURE_226  # Ensure ephemeral disks are used for OS disks
+  - CKV_AZURE_117  # Ensure that AKS uses disk encryption set
+  - CKV_AZURE_116  # Ensure that AKS uses Azure Policies Add-on
+  - CKV_AZURE_171  # Ensure AKS cluster upgrade channel is chosen
+  - CKV_AZURE_172  # Ensure autorotation of Secrets Store CSI Driver secrets for AKS clusters
+  - CKV_AZURE_232  # Ensure that only critical system pods run on system nodes
+  - CKV_AZURE_168  # Ensure AKS nodes should use a minimum number of 50 pods.
+  - CKV_AZURE_141  # Ensure AKS local admin account is disabled
+  - CKV_AZURE_170  # Ensure that AKS uses the Paid SKU for its SLA
+  - CKV_AZURE_227  # Ensure that the AKS cluster encrypt temp disks, caches, and data flows between Compute and Storage resources
