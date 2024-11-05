@@ -85,6 +85,15 @@ steps:
     echo scancomplete
   displayName: 'Install terraform-compliance with pip'
   workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/azure/aks
+- script: |
+    venv\Scripts\activate
+    echo venv activated
+    pip install pytest terraform-compliance
+    echo installcomplete
+    terraform-compliance -p $(tfPlanFile) -f features/compliance --output junit --junit-xml $(tfComplianceResults)
+    echo scancomplete
+  displayName: 'Install terraform-compliance with pip and venv'
+  workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/azure/aks
 - task: PublishTestResults@2
   inputs:
     testResultsFiles: '$(System.DefaultWorkingDirectory)/infrastructure/azure/aks/*.xml'
