@@ -6,7 +6,7 @@ terraform {
     }
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 4.0"
+      version = "~> 3.0"
     }
     random = {
       source  = "hashicorp/random"
@@ -23,5 +23,5 @@ terraform {
     container_name       = "tfstate"
     key                  = "terraform.tfstate"
   }
-  required_version = ">= 1.5.0"
+  required_version = ">= 1.3.0"
 }
