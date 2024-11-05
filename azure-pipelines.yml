@@ -88,7 +88,7 @@ steps:
     Remove-Item -Path 'C:\ProgramData\chocolatey\lib-bad' -Recurse -Force
     choco feature enable -n=useEnhancedExitCodes
     choco install chocolatey --force
-    choco install terrascan -Yes
+    choco install terrascan -y
   displayName: 'Install Chocolatey'
   workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/azure/aks
 
