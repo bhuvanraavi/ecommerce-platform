@@ -76,10 +76,15 @@ steps:
     pip install --upgrade pip
     pip install pytest terraform-compliance
     terraform-compliance -p main.tfplan.json -f features/compliance --junit-xml results.xml
-    echo scancomplete
   displayName: 'Install terraform-compliance with pip'
   workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/azure/aks
   continueOnError: true
+
+- script: |
+    pip install checkov
+    checkov -d . --skip-path venv --output junitxml > checkov_results.xml
+  displayName: 'Checkov scan and results'
+  workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/azure/aks
 
 - task: PublishTestResults@2
   inputs:
