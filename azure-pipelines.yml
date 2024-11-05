@@ -92,7 +92,7 @@ steps:
     targetType: 'inline'
     script: |
       # Specify the latest version you want to install
-      $version = "<latest_version>"
+      $version = "1.19.9"
 
       # Use curl as an alternative to Invoke-WebRequest
       $url = "https://github.com/tenable/terrascan/releases/download/v$version/terrascan_$version_windows_amd64.zip"
