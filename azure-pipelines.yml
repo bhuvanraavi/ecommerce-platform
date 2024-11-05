@@ -87,21 +87,22 @@ steps:
   workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/azure/aks
 
 - task: PowerShell@2
-  displayName: "Download and Install Terrascan"
+  displayName: "Download and Install Terrascan x64"
   inputs:
     targetType: 'inline'
     script: |
       # Specify the latest version you want to install
       $version = "<latest_version>"
-      
-      # Download Terrascan
-      Invoke-WebRequest -Uri "https://github.com/tenable/terrascan/releases/download/v$version/terrascan_$version_windows_amd64.zip" -OutFile "terrascan.zip"
-      
-      # Extract the executable
+
+      # Use curl as an alternative to Invoke-WebRequest
+      $url = "https://github.com/tenable/terrascan/releases/download/v$version/terrascan_$version_windows_amd64.zip"
+      curl -L -o terrascan.zip $url
+
+      # Extract the binary
       Expand-Archive -Path "terrascan.zip" -DestinationPath ".\terrascan"
-      
+
       # Add Terrascan directory to PATH for the current session
-      $env:Path += ";$(System.DefaultWorkingDirectory)\terrascan"
+      $env:Path += ";$(System.DefaultWorkingDirectory)\infrastructure\azure\aks\terrascan"
 
 
 - task: PublishTestResults@2
