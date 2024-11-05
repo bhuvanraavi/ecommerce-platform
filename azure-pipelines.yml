@@ -59,8 +59,10 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'show'
-    outputTo: 'console'
-    outputFormat: 'default'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/infrastructure/azure/aks'
+    outputTo: 'file'
+    outputFormat: 'json'
+    fileName: 'main.tfplan.json'
     environmentServiceNameAzureRM: 'TfConnection'
 - task: tfsec@1
   inputs:
@@ -75,7 +77,7 @@ steps:
 - script: |
     pip install --upgrade pip
     pip install pytest terraform-compliance
-    terraform-compliance -p main.tfplan -f features/compliance --output junit --junit-xml $(tfComplianceResults)
+    terraform-compliance -p main.tfplan.json -f features/compliance --output junit --junit-xml $(tfComplianceResults)
     echo scancomplete
   displayName: 'Install terraform-compliance with pip'
   workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/azure/aks
