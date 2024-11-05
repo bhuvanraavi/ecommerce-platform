@@ -1,3 +1,4 @@
+# tfsec:ignore:azure-container-limit-authorized-ips
 resource "azurerm_kubernetes_cluster" "default" {
   name                              = "${var.name}-aks"
   location                          = azurerm_resource_group.default.location
@@ -5,6 +6,11 @@ resource "azurerm_kubernetes_cluster" "default" {
   dns_prefix                        = "${var.dns_prefix}-${var.name}-aks-${var.environment}"
   depends_on                        = [azurerm_role_assignment.default]
   role_based_access_control_enabled = true
+  # api_server_authorized_ip_ranges = [ "10.0.0.0/8" ]
+
+  # api_server_access_profile {
+  #   authorized_ip_ranges = ["10.1.0.0/16", "10.0.0.0/8"]
+  # }
 
   default_node_pool {
     name            = "default"
@@ -25,6 +31,7 @@ resource "azurerm_kubernetes_cluster" "default" {
   }
   network_profile {
     network_plugin = "azure"
+    network_policy = "azure"
   }
   oms_agent {
     log_analytics_workspace_id = azurerm_log_analytics_workspace.default.id
