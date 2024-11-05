@@ -86,25 +86,25 @@ steps:
   displayName: 'Checkov scan and results'
   workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/azure/aks
 
-- script: |
-    echo "Downloading Terrascan..."
+- powershell: |
+    Write-Host "Downloading Terrascan..."
     $url = "https://github.com/accurics/terrascan/releases/latest/download/terrascan_windows_amd64.zip"
     Invoke-WebRequest -Uri $url -OutFile terrascan.zip
   displayName: 'Download Terrascan'
 
-- script: |
-    echo "Extracting Terrascan..."
+- powershell: |
+    Write-Host "Extracting Terrascan..."
     Expand-Archive -Path terrascan.zip -DestinationPath . -Force
   displayName: 'Extract Terrascan'
 
-- script: |
-    echo "Installing Terrascan..."
+- powershell: |
+    Write-Host "Installing Terrascan..."
     Move-Item -Path terrascan_windows_amd64 -Destination terrascan
     Move-Item -Path terrascan -Destination C:\ProgramData\chocolatey\bin  # Optional: move to a directory in PATH
   displayName: 'Install Terrascan'
 
-- script: |
-    echo "Running Terrascan version..."
+- powershell: |
+    Write-Host "Running Terrascan version..."
     .\terrascan version
   displayName: 'Check Terrascan Version'
 
