@@ -52,18 +52,11 @@ steps:
     provider: 'azurerm'
     command: 'plan'
     workingDirectory: '$(System.DefaultWorkingDirectory)/infrastructure/azure/aks'
-    commandOptions: '-out=main.tfplan'
+    commandOptions: '-out=tfplan.binary'
     environmentServiceNameAzureRM: 'TfConnection'
-- task: TerraformTaskV4@4
-  displayName: 'Terraform Show'
-  inputs:
-    provider: 'azurerm'
-    command: 'show'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/infrastructure/azure/aks'
-    outputTo: 'file'
-    outputFormat: 'json'
-    fileName: 'main.tfplan.json'
-    environmentServiceNameAzureRM: 'TfConnection'
+- script: terraform show -json tfplan.binary > main.tfplan.json
+  displayName: 'terraform show'
+  workingDirectory: '$(System.DefaultWorkingDirectory)/infrastructure/azure/aks'
 - task: tfsec@1
   inputs:
     version: 'v1.26.0'
