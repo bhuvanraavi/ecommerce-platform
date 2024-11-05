@@ -83,14 +83,14 @@ steps:
   displayName: 'Checkov scan and results'
   workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/azure/aks
 
-- script: |
-    @powershell -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
-    Remove-Item -Path 'C:\ProgramData\chocolatey\lib-bad' -Recurse -Force
-    choco feature enable -n=useEnhancedExitCodes
-    choco install chocolatey --force
+- powershell: |
+    Set-ExecutionPolicy Bypass -Scope Process -Force
+    [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
+    iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+    choco feature enable -n allowGlobalConfirmation
     choco install terrascan -y
-  displayName: 'Install Chocolatey'
-  workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/azure/aks
+  displayName: 'Install Chocolatey and Terrascan with Elevated Permissions'
+
 
 - script: |    
     terrascan scan -d . -o xml >  terrascanresults.xml
