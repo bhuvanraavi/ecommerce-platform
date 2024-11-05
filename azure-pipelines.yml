@@ -59,9 +59,6 @@ steps:
   displayName: 'terraform show'
   workingDirectory: '$(System.DefaultWorkingDirectory)/infrastructure/azure/aks'
 
-- script: type C:\agent\_work\1\s\infrastructure\azure\aks\main.tfplan.json
-  displayName: 'Debug: Print JSON Plan File'
-
 - task: tfsec@1
   inputs:
     version: 'v1.26.0'
@@ -88,11 +85,11 @@ steps:
 
 - script: |
     @powershell -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
+    choco install terrascan -y
   displayName: 'Install Chocolatey'
   workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/azure/aks
 
-- script: |
-    choco install terrascan -y
+- script: |    
     terrascan scan -d . -o xml >  terrascanresults.xml
   displayName: 'Install and run terrascan'
   workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/azure/aks
