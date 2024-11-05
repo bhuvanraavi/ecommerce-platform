@@ -92,7 +92,7 @@ steps:
   displayName: 'Install Chocolatey and Terrascan with Elevated Permissions'
 
 - script: |
-    terrascan scan -o json > terrascan-results.json
+    terrascan scan -d . -o json > terrascan-results.json
   displayName: 'Run Terrascan and Save Results in JSON'
   workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/azure/aks
 
