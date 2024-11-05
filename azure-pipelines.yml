@@ -76,10 +76,16 @@ steps:
     pip install --upgrade pip  # Upgrade pip to the latest version
     python -m venv venv
     venv\Scripts\activate
-    pip install terraform-compliance  # Install terraform-compliance, or specify other packages if needed
+    pip install pytest terraform-compliance  # Install terraform-compliance, or specify other packages if needed
     terraform-compliance -p $(tfPlanFile) -f features/compliance --output junit --junit-xml $(tfComplianceResults)
   displayName: 'Install terraform-compliance with pip'
   workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/azure/aks  # Optional: Set working directory if needed
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: '$(System.DefaultWorkingDirectory)/test-results/*.xml'
+    testResultsFormat: 'JUnit'
+    testRunTitle: 'JUnit Test Results'
+  displayName: 'Publish JUnit Test Results'
 - task: PublishBuildArtifacts@1
   displayName: 'Publishing the Artifacts'
   inputs:
