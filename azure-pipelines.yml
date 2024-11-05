@@ -86,24 +86,27 @@ steps:
   displayName: 'Checkov scan and results'
   workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/azure/aks
 
-- task: PowerShell@2
-  displayName: "Download and Install Terrascan x64"
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Specify the latest version you want to install
-      $version = "1.19.9"
+- script: |
+    echo "Downloading Terrascan..."
+    $url = "https://github.com/accurics/terrascan/releases/latest/download/terrascan_windows_amd64.zip"
+    Invoke-WebRequest -Uri $url -OutFile terrascan.zip
+  displayName: 'Download Terrascan'
 
-      # Use curl as an alternative to Invoke-WebRequest
-      $url = "https://github.com/tenable/terrascan/releases/download/v$version/terrascan_$version_windows_amd64.zip"
-      curl -L -o terrascan.zip $url
+- script: |
+    echo "Extracting Terrascan..."
+    Expand-Archive -Path terrascan.zip -DestinationPath . -Force
+  displayName: 'Extract Terrascan'
 
-      # Extract the binary
-      Expand-Archive -Path "terrascan.zip" -DestinationPath ".\terrascan"
+- script: |
+    echo "Installing Terrascan..."
+    Move-Item -Path terrascan_windows_amd64 -Destination terrascan
+    Move-Item -Path terrascan -Destination C:\ProgramData\chocolatey\bin  # Optional: move to a directory in PATH
+  displayName: 'Install Terrascan'
 
-      # Add Terrascan directory to PATH for the current session
-      $env:Path += ";$(System.DefaultWorkingDirectory)\infrastructure\azure\aks\terrascan"
-
+- script: |
+    echo "Running Terrascan version..."
+    .\terrascan version
+  displayName: 'Check Terrascan Version'
 
 - task: PublishTestResults@2
   inputs:
