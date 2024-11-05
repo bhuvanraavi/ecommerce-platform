@@ -90,23 +90,12 @@ steps:
     Write-Host "Downloading Terrascan..."
     $url = "https://github.com/tenable/terrascan/releases/download/v1.19.9/terrascan_1.19.9_Darwin_arm64.tar.gz"
     Invoke-WebRequest -Uri $url -OutFile terrascan.zip
-  displayName: 'Download Terrascan'
+    # Extract the binary
+    Expand-Archive -Path "terrascan.zip" -DestinationPath ".\terrascan"
 
-- powershell: |
-    Write-Host "Extracting Terrascan..."
-    Expand-Archive -Path terrascan.zip -DestinationPath . -Force
-  displayName: 'Extract Terrascan'
-
-- powershell: |
-    Write-Host "Installing Terrascan..."
-    Move-Item -Path terrascan_windows_amd64 -Destination terrascan
-    Move-Item -Path terrascan -Destination C:\ProgramData\chocolatey\bin  # Optional: move to a directory in PATH
-  displayName: 'Install Terrascan'
-
-- powershell: |
-    Write-Host "Running Terrascan version..."
-    .\terrascan version
-  displayName: 'Check Terrascan Version'
+    # Update the PATH for the current session to include Terrascan
+    $env:Path += ";$(System.DefaultWorkingDirectory)\terrascan"
+  displayName: 'Download and install Terrascan'
 
 - task: PublishTestResults@2
   inputs:
