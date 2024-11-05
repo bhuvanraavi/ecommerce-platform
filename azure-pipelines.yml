@@ -74,10 +74,15 @@ steps:
     architecture: 'x64'
 - script: |
     pip install --upgrade pip
+    echo pipupgraded
     python -m venv venv
+    echo venv installed
     venv\Scripts\activate
+    echo venv activated
     pip install pytest terraform-compliance
+    echo installcomplete
     terraform-compliance -p $(tfPlanFile) -f features/compliance --output junit --junit-xml $(tfComplianceResults)
+    echo scancomplete
   displayName: 'Install terraform-compliance with pip'
   workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/azure/aks
 - task: PublishTestResults@2
