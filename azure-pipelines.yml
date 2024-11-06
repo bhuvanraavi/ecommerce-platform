@@ -93,7 +93,6 @@ steps:
 
 - script: |
     terrascan scan -i terraform --skip-rules AC_AZURE_0389 --non-recursive --output junit-xml > terrascan-results.xml
-    cat terrascan-results.xml
   displayName: 'Run Terrascan and Save Results in JSON'
   workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/azure/aks
 
