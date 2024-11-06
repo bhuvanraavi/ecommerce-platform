@@ -92,7 +92,7 @@ steps:
   displayName: 'Install Chocolatey and Terrascan with Elevated Permissions'
 
 - script: |
-    terrascan scan -d . --skip-rules AC_AZURE_0389 -o json > terrascan-results.json
+    terrascan scan -i terraform  --skip-rules AC_AZURE_0389 --non-recursive -o json >  terrascan-results.json
   displayName: 'Run Terrascan and Save Results in JSON'
   workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/azure/aks
 
