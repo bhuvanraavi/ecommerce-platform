@@ -95,6 +95,14 @@ steps:
     terrascan scan -i terraform --skip-rules AC_AZURE_0389 --non-recursive --output junit-xml > terrascan-results.xml
   displayName: 'Run Terrascan and Save Results in JSON'
   workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/azure/aks
+- task: GoTool@0
+  inputs:
+    version: '1.10'
+
+- script: |
+    go test -v -timeout 20m -json > test_results.json
+  displayName: 'Run Terratest'
+  workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/azure/aks/terratest
 
 - task: PublishTestResults@2
   inputs:
