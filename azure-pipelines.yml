@@ -31,7 +31,7 @@ steps:
     workingDirectory: '$(Build.SourcesDirectory)/infrastructure/azure/aks'
     backendServiceArm: 'TfConnection'
     backendAzureRmResourceGroupName: 'tfstate'
-    backendAzureRmStorageAccountName: 'tfstateravi2408'
+    backendAzureRmStorageAccountName: 'tfstateravi24081982'
     backendAzureRmContainerName: 'tfstate'
     backendAzureRmKey: 'terraform.tfstate'
 - task: TerraformTaskV4@4
